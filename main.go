@@ -12,12 +12,19 @@ import (
 
 func main() {
 
+	//dbName := os.Getenv("db_name")
+	//fmt.Println(dbName)
 	router := mux.NewRouter()
 	router.HandleFunc("/api/heroes", controllers.GetHeroes).Methods("GET")
 	router.HandleFunc("/api/heroes/{id}", controllers.GetHeroe).Methods("GET")
+	router.HandleFunc("/api/heroes/name/{name}", controllers.GetNameHeroe).Methods("GET")
 	router.HandleFunc("/api/heroes", controllers.CreateHeroe).Methods("POST")
 	router.HandleFunc("/api/heroes/{id}", controllers.UpdateHeroe).Methods("PUT")
 	router.HandleFunc("/api/heroes/{id}", controllers.DeleteHeroe).Methods("DELETE")
+
+	//s.HandleFunc("/venues/{id:[0-9]+}", a.UpdateVenue).Methods("PUT")
+
+	router.HandleFunc("/api/teste", controllers.TesteHttp).Methods("GET")
 
 	port := os.Getenv("PORT")
 	if port == "" {

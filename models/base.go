@@ -39,8 +39,27 @@ func init() {
 	}
 
 	db = conn
-	//db.Debug().AutoMigrate(&Hero{}, &Hero{}) //Database migration
-	db.Debug().AutoMigrate(&Heroe{}) //Database migration
+
+	db.Debug().AutoMigrate(&Heroe{}, &Connection{}) //Database migration
+	db.Debug().Model(&Connection{}).AddForeignKey("heroe_id", "Heroes(id)", "CASCADE", "CASCADE")
+
+	Morcego := Heroe{
+		Name:         "Batman",
+		Intelligence: 100,
+		FullName:     "Bruce Wayne",
+		Power:        47,
+		Occupation:   "Businessman",
+		Image:        "https://firebasestorage.googleapis.com/v0/b/axeldbcloud.appspot.com/o/Batman-lista.jpg?alt=media&token=5a452bbc-8151-4714-b32e-2147b5239b62",
+		Relatives:    4,
+		Type:         "Heroes",
+		Connection: []Connection{
+			{Group: "Justice League"},
+			{Group: "Wayne Enterprises"},
+			{Group: "Club of Heroes"},
+			{Group: "formerly White Lantern Corps"},
+			{Group: "Sinestro Corps"}}}
+
+	db.Debug().Create(&Morcego)
 
 }
 
