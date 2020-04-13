@@ -1,0 +1,266 @@
+basePath: /
+definitions:
+  models.APIError:
+    properties:
+      createdAt:
+        type: string
+      errorCode:
+        type: integer
+      errorMessage:
+        type: string
+    type: object
+  models.Connection:
+    properties:
+      group:
+        type: string
+      id:
+        type: string
+      superID:
+        type: string
+    type: object
+  models.Super:
+    properties:
+      connections:
+        description: one-to-many relationship
+        items:
+          $ref: '#/definitions/models.Connection'
+        type: array
+      fullname:
+        type: string
+      id:
+        description: gorm.Model
+        type: string
+      image:
+        type: string
+      intelligence:
+        type: integer
+      name:
+        type: string
+      occupation:
+        type: string
+      power:
+        type: integer
+      relatives:
+        type: integer
+      type:
+        type: string
+    type: object
+host: localhost:8484
+info:
+  contact:
+    email: axel_nomore@hotmail.com
+    name: API Support
+  description: This is a sample serice for managing super heroes and villains
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Supers API
+  version: "1.0"
+paths:
+  /api/supers:
+    get:
+      consumes:
+      - application/json
+      description: return all supers
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Super'
+        "400":
+          description: We need ID!!
+          schema:
+            $ref: '#/definitions/models.APIError'
+        "404":
+          description: Unable to register
+          schema:
+            $ref: '#/definitions/models.APIError'
+      summary: Get all supers
+      tags:
+      - supers
+    post:
+      consumes:
+      - application/json
+      description: Create a new super with the input paylod
+      parameters:
+      - description: this is a test super
+        in: body
+        name: Super
+        required: true
+        schema:
+          $ref: '#/definitions/models.Super'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Super'
+        "400":
+          description: We need ID!!
+          schema:
+            $ref: '#/definitions/models.APIError'
+        "404":
+          description: Unable to register
+          schema:
+            $ref: '#/definitions/models.APIError'
+      summary: Create a new super
+      tags:
+      - supers
+  /api/supers/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete the super corresponding to the input id
+      parameters:
+      - description: ID of the super to be deleted
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "400":
+          description: We need ID!!
+          schema:
+            $ref: '#/definitions/models.APIError'
+        "404":
+          description: Unable to register
+          schema:
+            $ref: '#/definitions/models.APIError'
+      summary: Delete super identified by the given id
+      tags:
+      - supers
+    get:
+      consumes:
+      - application/json
+      description: Get details of super corresponding to the input id
+      parameters:
+      - description: ID of the super
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Super'
+        "400":
+          description: We need ID!!
+          schema:
+            $ref: '#/definitions/models.APIError'
+        "404":
+          description: Unable to register
+          schema:
+            $ref: '#/definitions/models.APIError'
+      summary: Get details for a given super id
+      tags:
+      - supers
+    put:
+      consumes:
+      - application/json
+      description: Update a new super with the input paylod
+      parameters:
+      - description: ID of the super to be update
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: this is a test Super
+        in: body
+        name: Super
+        required: true
+        schema:
+          $ref: '#/definitions/models.Super'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Super'
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/models.Super'
+        "400":
+          description: We need ID!!
+          schema:
+            $ref: '#/definitions/models.APIError'
+        "404":
+          description: Unable to register
+          schema:
+            $ref: '#/definitions/models.APIError'
+      summary: Update a super
+      tags:
+      - supers
+  /api/supers/name/{name}:
+    get:
+      consumes:
+      - application/json
+      description: Get details of super corresponding to the input name
+      parameters:
+      - description: name of the super
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Super'
+        "400":
+          description: We need ID!!
+          schema:
+            $ref: '#/definitions/models.APIError'
+        "404":
+          description: Unable to register
+          schema:
+            $ref: '#/definitions/models.APIError'
+      summary: Get details for a given super Name
+      tags:
+      - supers
+  /api/supers/type/{type}:
+    get:
+      consumes:
+      - application/json
+      description: return all supers heroes and villains
+      parameters:
+      - description: type Hero or villain
+        in: path
+        name: type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Super'
+        "400":
+          description: We need ID!!
+          schema:
+            $ref: '#/definitions/models.APIError'
+        "404":
+          description: Unable to register
+          schema:
+            $ref: '#/definitions/models.APIError'
+      summary: Get all supers [heroes and villains]
+      tags:
+      - HeroesOrVillains
+swagger: "2.0"
