@@ -186,14 +186,10 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "204":
+          description: No Content
           schema:
-            $ref: '#/definitions/models.Super'
-        "202":
-          description: Accepted
-          schema:
-            $ref: '#/definitions/models.Super'
+            type: string
         "400":
           description: We need ID!!
           schema:

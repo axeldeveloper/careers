@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	u "levpay/utils"
 	"time"
 
@@ -90,29 +91,32 @@ func (super *Super) CreateSuper() (*Super, error) {
 // @Produce  json
 // @Param id path string true "ID of the super to be update"
 // @Param Super body Super true  "this is a test Super"
-// @Success 200 {object} Super
-// @Success 202 {object} Super
+// @Success 204 {string} string "No Content"
 // @Failure 400 {object} APIError "We need ID!!"
 // @Failure 404 {object} APIError "Unable to register"
 // @Router /api/supers/{id} [put]
 func (super *Super) UpdateSuper(uid string) (*Super, error) {
-	db = GetDB().Debug().Model(&Super{}).Where("id = ?", uid).Take(&Super{}).UpdateColumns(
+
+	fmt.Println(super.Connection)
+
+	db = GetDB().Debug().Preload("Connection").Model(&Super{}).Where("id = ?", uid).Take(&Super{}).UpdateColumns(
 		map[string]interface{}{
-			"Name":         super.Name,
-			"FullName":     super.FullName,
-			"Intelligence": super.Intelligence,
-			"Power":        super.Power,
-			"Occupation":   super.Occupation,
-			"Image":        super.Image,
-			"Relatives":    super.Relatives,
-			"Type":         super.Type,
+			"name":         super.Name,
+			"fullName":     super.FullName,
+			"intelligence": super.Intelligence,
+			"power":        super.Power,
+			"occupation":   super.Occupation,
+			"image":        super.Image,
+			"relatives":    super.Relatives,
+			"type":         super.Type,
+			"connections":  super.Connection,
 		},
 	)
 	if db.Error != nil {
 		return &Super{}, db.Error
 	}
 	// This is the display the updated user
-	err := db.Debug().Preload("Connection").Model(&Super{}).Where("id = ?", uid).Take(&super).Error
+	err := GetDB().Debug().Preload("Connection").Model(&Super{}).Where("id = ?", uid).Take(&super).Error
 	if err != nil {
 		return &Super{}, err
 	}

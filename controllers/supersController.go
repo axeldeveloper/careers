@@ -123,13 +123,15 @@ func UpdateSuper(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	uid := vars["id"]
 	super := &models.Super{}
-	err := json.NewDecoder(r.Body).Decode(super)
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	err := json.Unmarshal(reqBody, &super)
 	if err != nil {
-		u.ERROR(w, http.StatusBadRequest, err)
+		u.Respond(w, http.StatusBadRequest, u.Message(false, err.Error()))
 		return
 	}
 
 	data, err := super.UpdateSuper(uid)
+
 	if err != nil {
 		u.ERROR(w, http.StatusBadRequest, err)
 		return
@@ -137,6 +139,7 @@ func UpdateSuper(w http.ResponseWriter, r *http.Request) {
 
 	if data != nil {
 		resp := u.Message(true, "success")
+		resp["data"] = data
 		u.Respond(w, http.StatusNoContent, resp)
 	} else {
 		u.ERROR(w, http.StatusBadRequest, err)
